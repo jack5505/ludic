@@ -13,8 +13,7 @@ public record TransactionDto(String senderAccount,
                              Currency sendCurrency,
                              Currency receiveCurrency,
                              Long receiveAmount,
-                             Long senderUser,
-                             Long receiverUser,
+                             Long userId,
                              Status status,
                              LocalDateTime dateTime) {
 }

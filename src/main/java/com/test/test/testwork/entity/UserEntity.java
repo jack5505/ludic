@@ -4,6 +4,8 @@ import com.test.test.testwork.controller.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Builder
@@ -29,6 +31,8 @@ public class UserEntity {
 
     private String fio;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<TransactionEntity> transaction;
 
 
 }

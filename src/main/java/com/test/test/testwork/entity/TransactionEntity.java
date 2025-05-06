@@ -22,9 +22,8 @@ public class TransactionEntity {
 
     private Long receiverAmount;
 
-    private String senderUserId;
-
-    private String receiverUserId;
+    @ManyToOne
+    private UserEntity user;
 
     @Enumerated(EnumType.STRING)
     private Currency senderCurrency;
