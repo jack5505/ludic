@@ -1,14 +1,13 @@
 package com.test.test.testwork.controller;
 
+import com.test.test.testwork.common.ApiKey;
 import com.test.test.testwork.controller.dto.UserDto;
 import com.test.test.testwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/api/v1/users")
+@RestController(ApiKey.USERS)
 @RequiredArgsConstructor
 public class UserController {
 
@@ -16,6 +15,18 @@ public class UserController {
 
     @PostMapping
     private Object createUser(@RequestBody UserDto user) {
-        return ResponseEntity.ok(userService.createUser(user));
+        userService.createOrChangeUser(user);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    private Object getUser(@PathVariable Long userId){
+        return ResponseEntity.ok(userService.getById(userId));
+    }
+
+    @PutMapping
+    private Object updateUser(@RequestBody UserDto user) {
+        userService.createOrChangeUser(user);
+        return ResponseEntity.noContent().build();
     }
 }

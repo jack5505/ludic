@@ -5,6 +5,8 @@ public record UserDto(String fio,
                       String password,
                       String email,
                       String phone,
-                      String address
-                      ) {
+                      String address,
+                      Long userId
+                      )  {
+
 }

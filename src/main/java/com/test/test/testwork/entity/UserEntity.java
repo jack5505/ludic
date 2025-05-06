@@ -1,5 +1,6 @@
 package com.test.test.testwork.entity;
 
+import com.test.test.testwork.controller.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,5 +28,7 @@ public class UserEntity {
     private String address;
 
     private String fio;
+
+
 
 }

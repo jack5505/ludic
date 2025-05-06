@@ -3,6 +3,8 @@ package com.test.test.testwork.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "transactions")
 @Builder
@@ -30,5 +32,13 @@ public class TransactionEntity {
     @Enumerated(EnumType.STRING)
     private Currency receiverCurrency;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    private LocalDateTime createdDate;
+
+    private String senderAccount;
+
+    private String receiverAccount;
 
 }
