@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: test_work
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test_work
+    username: myuser
+    password: myuser
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+  profiles:
+    default: dev
