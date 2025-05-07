@@ -13,11 +13,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -49,11 +52,27 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Page<TransactionEntity> getReports(TransactionCriteria transaction,
+    public Page<TransactionDto> getReports(TransactionCriteria transaction,
                                    Integer size,
                                    Integer page)
     {
-            return transactionRepository.findAll(CreateSpecification.createSpecification(transaction), PageRequest.of(page, size));
+        var list = transactionRepository.findAll(CreateSpecification.createSpecification(transaction),
+                        PageRequest.of(page, size))
+                .stream()
+                .map(i -> TransactionDto
+                        .builder()
+                        .userId(i.getUser().getId())
+                        .dateTime(i.getCreatedDate())
+                        .status(i.getStatus())
+                        .receiverAccount(i.getReceiverAccount())
+                        .sendAmount(i.getSenderAmount())
+                        .receiveAmount(i.getReceiverAmount())
+                        .sendCurrency(i.getSenderCurrency())
+                        .receiveCurrency(i.getReceiverCurrency())
+                        .build())
+                .toList();
+
+        return new PageImpl<>(list, PageRequest.of(page, size), list.size());
     }
 
 

@@ -23,13 +23,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createOrChangeUser(UserDto user)
     {
-            if (Objects.isNull(user.userId())) {
+            if (Objects.isNull(user.userId()))
+            {
                  userRepository.save(Utils.getUserEntity(user,UserEntity
                         .builder()
                         .build())
                 );
+                 return;
             }
-        userRepository.findById(user.userId())
+            userRepository.findById(user.userId())
                 .ifPresentOrElse(s-> userRepository.save(Utils.getUserEntity(user,s)),
                         ()->{
                             userRepository.save(Utils.getUserEntity(user,UserEntity.builder().build()));

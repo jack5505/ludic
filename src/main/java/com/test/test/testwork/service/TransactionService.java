@@ -8,5 +8,5 @@ import org.springframework.data.domain.Page;
 public interface TransactionService {
     Object createTransaction(TransactionDto transaction);
 
-    Page<TransactionEntity> getReports(TransactionCriteria transaction, Integer size, Integer page);
+    Page<TransactionDto> getReports(TransactionCriteria transaction, Integer size, Integer page);
 }
