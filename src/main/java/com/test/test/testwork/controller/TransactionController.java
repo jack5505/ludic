@@ -9,10 +9,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,17 +32,25 @@ public class TransactionController {
 
     @GetMapping
     public ResponseEntity<?> getTransactions(@RequestParam(required = false, defaultValue = "10") Integer size,
-                                             @RequestParam(required = false, defaultValue = "1") Integer page,
-                                             @RequestParam(name = "from") LocalDateTime start,
-                                             @RequestParam(name = "to") LocalDateTime end,
+                                             @RequestParam(required = false, defaultValue = "0") Integer page,
+                                             @RequestParam(name = "from")  //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+                                                 LocalDate start,
+                                             @RequestParam(name = "to") //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+                                                 LocalDate end,
                                              @RequestParam(name = "userId",required = false) Long userId,
                                              @RequestParam(name = "senderAccount",required = false) String senderAccount,
                                              @RequestParam(name = "receiverAccount",required = false) String receiverAccount
                                              ) {
         TransactionCriteria transaction = TransactionCriteria
                 .builder()
-                .start(start)
-                .end(end)
+                .start(start.atTime(0,0,0)
+                        .toInstant(ZoneOffset.MAX)
+                        .toEpochMilli()
+                )
+                .end(end.atTime(23, 59, 59)
+                        .toInstant(ZoneOffset.MAX)
+                        .toEpochMilli()
+                )
                 .userId(userId)
                 .senderAccount(senderAccount)
                 .receiverAccount(receiverAccount)

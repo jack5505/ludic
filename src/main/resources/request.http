@@ -1,0 +1,49 @@
+###users create entity
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+  "fio": "test",
+  "username": "test",
+  "password": "test",
+  "email": "test",
+  "phone": "99893755555",
+  "address": "jacjak"
+}
+
+
+### GetUserId
+GET http://localhost:8080/api/v1/users/1
+Content-Type: application/json
+
+### UpdateUserId
+PUT http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+  "fio": "test2",
+  "username": "test2",
+  "password": "test2",
+  "email": "test2",
+  "phone": "99893755555",
+  "address": "jacjak",
+  "userId": 2
+}
+
+### Transactions
+POST http://localhost:8080/api/v1/transactions
+Content-Type: application/json
+
+{
+  "senderAccount": "test1",
+  "receiverAccount": "test1",
+  "sendAmount": "100",
+  "sendCurrency": "UZS",
+  "receiveCurrency": "UZS",
+  "receiveAmount": "100",
+  "userId": 3
+}
+
+### GetReportTransactions
+GET http://localhost:8080/api/v1/transactions?from=2025-05-05&to=2025-05-07
+Content-Type: application/json

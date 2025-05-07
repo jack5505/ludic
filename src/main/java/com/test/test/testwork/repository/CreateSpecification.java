@@ -16,19 +16,19 @@ public class CreateSpecification {
             return greaterThan(criteria.getStart())
                     .and(equalTo(criteria.getReceiverAccount(),"receiverAccount"))
                     .and(equalTo(criteria.getSenderAccount(),"senderAccount"))
-                    .and(lessThan(criteria.getEnd()))
-                    .and(equalToUser(criteria.getUserId()));
+                    .and(equalToUser(criteria.getUserId()))
+                    .and(lessThan(criteria.getEnd()));
     }
 
     public static Specification<TransactionEntity> equalTo(String value,String key){
         return ((root, query, criteriaBuilder) -> Objects.nonNull(value) && StringUtils.isNoneEmpty(value) ? criteriaBuilder.equal(root.get(key), value) : null);
     }
 
-    public static Specification<TransactionEntity> greaterThan(LocalDateTime time){
-        return ((root, query, criteriaBuilder) -> Objects.nonNull(time) ? criteriaBuilder.greaterThan(root.get("createdDate"),time) : null);
+    public static Specification<TransactionEntity> greaterThan(Long time){
+        return ((root, query, criteriaBuilder) -> Objects.nonNull(time) ? criteriaBuilder.greaterThanOrEqualTo(root.get("transactionTime"),time) : null);
     }
-    public static Specification<TransactionEntity> lessThan(LocalDateTime time){
-        return (root, query, criteriaBuilder) -> Objects.nonNull(time) ? criteriaBuilder.lessThan(root.get("createdDate"),time)  : null;
+    public static Specification<TransactionEntity> lessThan(Long time){
+        return (root, query, criteriaBuilder) -> Objects.nonNull(time) ? criteriaBuilder.lessThanOrEqualTo(root.get("transactionTime"), time)  : null;
     }
     public static Specification<TransactionEntity> equalToUser(Long value){
         return (root, query, criteriaBuilder) -> {

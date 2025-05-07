@@ -1,5 +1,8 @@
 package com.test.test.testwork.controller.dto;
 
+import lombok.Builder;
+
+@Builder
 public record UserDto(String fio,
                       String username,
                       String password,

@@ -2,6 +2,7 @@ package com.test.test.testwork.controller.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -10,8 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionCriteria {
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private Long start;
+    private Long end;
     private Long userId;
     private String senderAccount;
     private String receiverAccount;

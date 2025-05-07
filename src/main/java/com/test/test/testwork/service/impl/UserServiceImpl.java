@@ -31,18 +31,29 @@ public class UserServiceImpl implements UserService {
                 );
                  return;
             }
-            userRepository.findById(user.userId())
-                .ifPresentOrElse(s-> userRepository.save(Utils.getUserEntity(user,s)),
-                        ()->{
-                            userRepository.save(Utils.getUserEntity(user,UserEntity.builder().build()));
-                        });
+        UserEntity userEntity = userRepository.findById(user.userId()).orElseThrow(BadRequestException::dataNotFound);
+        userRepository.save(Utils.getUserEntity(user,userEntity));
     }
 
     @Override
-    public UserEntity getById(Long userId)
+    public UserDto getById(Long userId)
     {
         return userRepository.findById(userId)
+                .map(i-> UserDto.builder()
+                        .userId(i.getId())
+                        .username(i.getUsername())
+                        .password(i.getPassword())
+                        .fio(i.getFio())
+                        .phone(i.getPhone())
+                        .email(i.getEmail())
+                        .address(i.getAddress())
+                        .build())
                 .orElseThrow(BadRequestException::dataNotFound);
+    }
+
+    @Override
+    public UserEntity getByIdUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(BadRequestException::dataNotFound);
     }
 
 

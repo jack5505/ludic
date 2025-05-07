@@ -6,5 +6,7 @@ import com.test.test.testwork.entity.UserEntity;
 public interface UserService {
     void createOrChangeUser(UserDto user);
 
-    UserEntity getById(Long userId);
+    UserDto getById(Long userId);
+
+    UserEntity getByIdUser(Long userId);
 }

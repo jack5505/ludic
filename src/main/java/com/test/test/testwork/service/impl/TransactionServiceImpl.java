@@ -18,6 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -34,7 +36,7 @@ public class TransactionServiceImpl implements TransactionService {
     public Object createTransaction(TransactionDto transaction)
     {
         TransactionEntity transactionEntity = new TransactionEntity();
-        var user = userService.getById(transaction.userId());
+        var user = userService.getByIdUser(transaction.userId());
         try {
             transactionEntity.setCreatedDate(LocalDateTime.now());
             transactionEntity.setSenderAmount(transaction.sendAmount());
@@ -44,6 +46,12 @@ public class TransactionServiceImpl implements TransactionService {
             transactionEntity.setReceiverCurrency(transaction.receiveCurrency());
             transactionEntity.setSenderAccount(transaction.senderAccount());
             transactionEntity.setReceiverAccount(transaction.receiverAccount());
+
+            transactionEntity.setTransactionTime(LocalDateTime.now()
+                    .toInstant(ZoneOffset.MAX)
+                    .toEpochMilli()
+            );
+
             transactionEntity.setStatus(Status.SUCCESS);
         }catch (Exception e){
             log.error(e.getMessage());
@@ -56,7 +64,8 @@ public class TransactionServiceImpl implements TransactionService {
                                    Integer size,
                                    Integer page)
     {
-        var list = transactionRepository.findAll(CreateSpecification.createSpecification(transaction),
+        var list = transactionRepository.findAll(CreateSpecification
+                                .createSpecification(transaction),
                         PageRequest.of(page, size))
                 .stream()
                 .map(i -> TransactionDto
@@ -71,7 +80,6 @@ public class TransactionServiceImpl implements TransactionService {
                         .receiveCurrency(i.getReceiverCurrency())
                         .build())
                 .toList();
-
         return new PageImpl<>(list, PageRequest.of(page, size), list.size());
     }
 

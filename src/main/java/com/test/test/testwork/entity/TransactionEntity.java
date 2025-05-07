@@ -41,4 +41,6 @@ public class TransactionEntity {
 
     private String receiverAccount;
 
+    private Long transactionTime;
+
 }
