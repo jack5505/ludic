@@ -1,7 +1,13 @@
 spring:
   application:
     name: test_work
-
+  profiles:
+    active: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
   datasource:
     url: jdbc:postgresql://localhost:5432/test_work
     username: myuser
@@ -11,5 +17,17 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-  profiles:
-    default: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: jdbc:postgresql://host.docker.internal:5432/test_work
+    username: myuser
+    password: myuser
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
