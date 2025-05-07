@@ -1,15 +1,18 @@
 package com.test.test.testwork.controller;
 
 import com.test.test.testwork.common.ApiKey;
+import com.test.test.testwork.controller.dto.TransactionCriteria;
 import com.test.test.testwork.controller.dto.TransactionDto;
 import com.test.test.testwork.service.TransactionService;
 import com.test.test.testwork.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +26,27 @@ public class TransactionController {
     public ResponseEntity<?> createTransaction(@RequestBody TransactionDto transaction) {
         return ResponseEntity.ok(transactionService.createTransaction(transaction));
     }
+
+    @GetMapping
+    public ResponseEntity<?> getTransactions(@RequestParam(required = false, defaultValue = "10") Integer size,
+                                             @RequestParam(required = false, defaultValue = "1") Integer page,
+                                             @RequestParam(name = "from") LocalDateTime start,
+                                             @RequestParam(name = "to") LocalDateTime end,
+                                             @RequestParam(name = "userId",required = false) Long userId,
+                                             @RequestParam(name = "senderAccount",required = false) String senderAccount,
+                                             @RequestParam(name = "receiverAccount",required = false) String receiverAccount
+                                             ) {
+        TransactionCriteria transaction = TransactionCriteria
+                .builder()
+                .start(start)
+                .end(end)
+                .userId(userId)
+                .senderAccount(senderAccount)
+                .receiverAccount(receiverAccount)
+                .build();
+        return ResponseEntity.ok(transactionService.getReports(transaction,size,page));
+
+    }
+
 
 }

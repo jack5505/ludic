@@ -3,6 +3,7 @@ package com.test.test.testwork.service.impl;
 import com.test.test.testwork.controller.dto.Dto;
 import com.test.test.testwork.controller.dto.UserDto;
 import com.test.test.testwork.entity.UserEntity;
+import com.test.test.testwork.exception.BadRequestException;
 import com.test.test.testwork.repository.UserRepository;
 import com.test.test.testwork.service.UserService;
 import com.test.test.testwork.utils.Utils;
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserService {
     public UserEntity getById(Long userId)
     {
         return userRepository.findById(userId)
-                .orElse(null);
+                .orElseThrow(BadRequestException::dataNotFound);
     }
 
 

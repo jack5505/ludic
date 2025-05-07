@@ -1,18 +1,23 @@
 package com.test.test.testwork.service.impl;
 
+import com.test.test.testwork.controller.dto.TransactionCriteria;
 import com.test.test.testwork.controller.dto.TransactionDto;
 import com.test.test.testwork.entity.Status;
 import com.test.test.testwork.entity.TransactionEntity;
 import com.test.test.testwork.entity.UserEntity;
+import com.test.test.testwork.repository.CreateSpecification;
 import com.test.test.testwork.repository.TransactionRepository;
 import com.test.test.testwork.service.TransactionService;
 import com.test.test.testwork.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -41,6 +46,14 @@ public class TransactionServiceImpl implements TransactionService {
             log.error(e.getMessage());
         }
         return transactionRepository.save(transactionEntity);
+    }
+
+    @Override
+    public Page<TransactionEntity> getReports(TransactionCriteria transaction,
+                                   Integer size,
+                                   Integer page)
+    {
+            return transactionRepository.findAll(CreateSpecification.createSpecification(transaction), PageRequest.of(page, size));
     }
 
 

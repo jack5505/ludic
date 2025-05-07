@@ -23,6 +23,7 @@ public class TransactionEntity {
     private Long receiverAmount;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @Enumerated(EnumType.STRING)
